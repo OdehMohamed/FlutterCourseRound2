@@ -1,0 +1,26 @@
+{
+    "Home": "الرئيسية",
+    "Favorites": "المفضلة",
+    "Profile": "الملف الشخصي",
+    "titleAppBar1": "الموقع الحالي",
+    "titleAppBar2": "فلسطين، القدس",
+    "searchHintText": "ابحث عن طعامك",
+    "categoryName":{
+        "categoryName1": "برجر",
+        "categoryName2": "تاكو",
+        "categoryName3": "بيتزا",
+        "categoryName4": "دجاج",
+        "categoryName5": "مشروبات"
+    },
+    "productName":{
+        "product1": "برجر لحم",
+        "product2": "برجر دجاج",
+        "product3": "برجر بالجبن",
+        "product4": "بيتزا دجاج",
+        "product5": "بيتزا مارغريتا",
+        "product6": "لازانيا",
+        "product7": "كشري",
+        "product8": "دجاج مقلي",
+        "product9": "دجاج مشوي"
+    }
+}

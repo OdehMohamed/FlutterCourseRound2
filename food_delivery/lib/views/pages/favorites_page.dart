@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/models/product_model.dart';
 import 'package:food_delivery/utils/app_colors.dart';
+import 'package:food_delivery/functions/is_arabic_language.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -11,6 +13,7 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   late List<ProductModel> favoriteProducts;
+  List<double?> d = [0, 0];
   @override
   void initState() {
     super.initState();
@@ -31,15 +34,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
             ),
             DecoratedBox(
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Text(
+              child: Text(
                 "Favorite Products",
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primary),
+                    color: Theme.of(context).primaryColor),
               ),
             ),
             const SizedBox(
@@ -56,7 +59,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: AppColors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Stack(
@@ -64,7 +67,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         children: [
                           Positioned(
                             top: 4,
-                            right: 4,
+                            right: isArabic() ? null : 4,
+                            left: isArabic() ? 4 : null,
                             child: IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -85,8 +89,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Image.network(
-                                  product.imgUrl,
+                                CachedNetworkImage(
+                                  imageUrl: product.imgUrl,
                                   height: 100,
                                   width: 100,
                                 ),
@@ -112,9 +116,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                       ),
                                       Text(
                                         "\$${product.price}",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: AppColors.primary,
+                                          color: Theme.of(context).primaryColor,
                                           fontSize: 16,
                                         ),
                                       ),

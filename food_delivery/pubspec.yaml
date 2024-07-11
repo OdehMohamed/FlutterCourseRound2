@@ -9,21 +9,29 @@ environment:
   sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
+  cached_network_image: ^3.3.1
   cupertino_icons: ^1.0.6
   curved_navigation_bar: ^1.0.3
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   http: ^1.2.1
+  intl: ^0.18.1
+  intl_translation: ^0.20.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/images/
   #   - images/a_dot_ham.jpeg
+
+flutter_intl:
+  enabled: true
+  class_name: S
+  main_locale: en

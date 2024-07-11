@@ -1,9 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/functions/is_arabic_language.dart';
+import 'package:food_delivery/generated/l10n.dart';
 import 'package:food_delivery/models/category_model.dart';
 import 'package:food_delivery/models/product_model.dart';
-import 'package:food_delivery/utils/app_colors.dart';
+import 'package:food_delivery/views/pages/product_details_page.dart';
 
 class HomePage extends StatefulWidget {
+  static const String routeName = "/home_page";
   const HomePage({super.key});
 
   @override
@@ -13,7 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? selectedCategoryId;
   late List<ProductModel> filteredProducts;
-  //late Map<String, bool> favoriteProducts;
   @override
   void initState() {
     super.initState();
@@ -57,9 +60,9 @@ class _HomePageState extends State<HomePage> {
               onChanged: (value) => search(value),
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
-                hintText: 'Find your food',
+                hintText: S.of(context).searchHintText,
                 filled: true,
-                fillColor: AppColors.white,
+                fillColor: Theme.of(context).colorScheme.onPrimary,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
@@ -98,8 +101,8 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         color: selectedCategoryId == category.id
-                            ? AppColors.primary
-                            : AppColors.white,
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).colorScheme.onPrimary,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -110,17 +113,17 @@ class _HomePageState extends State<HomePage> {
                               width: 50,
                               height: 50,
                               color: selectedCategoryId == category.id
-                                  ? AppColors.white
-                                  : AppColors.black,
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSecondary,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              category.name,
+                              S.of(context).categoryName(index + 1),
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: selectedCategoryId == category.id
-                                    ? AppColors.white
-                                    : AppColors.black,
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),
                           ],
@@ -146,72 +149,78 @@ class _HomePageState extends State<HomePage> {
             shrinkWrap: true,
             itemBuilder: (_, index) {
               final product = filteredProducts[index];
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.network(
-                            product.imgUrl,
-                            height: 100,
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            product.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
+              return InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ProductDetailsPage.routeName,
+                      arguments: product);
+                },
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: product.imgUrl,
+                              height: 100,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "\$${product.price}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                              fontSize: 16,
+                            const SizedBox(
+                              height: 4,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.grey100,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              product.isFavorite = !product.isFavorite;
-                            });
-                          },
-                          child: Icon(
-                            product.isFavorite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: AppColors.primary,
-                            size: 24,
-                          ),
+                            Text(
+                              S.of(context).productName(index + 1),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              "\$${product.price}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        top: 8,
+                        right: isArabic() ? null : 8,
+                        left: isArabic() ? 8 : null,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.transparent,
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                product.isFavorite = !product.isFavorite;
+                              });
+                            },
+                            child: Icon(
+                              product.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

@@ -1,0 +1,27 @@
+{
+    "Home":"Home",
+    "Favorites":"Favorites",
+    "Profile":"Profile",
+    "titleAppBar1":"Current Location",
+    "titleAppBar2": "Palestine, jerusalem",
+    "searchHintText":"Find your food",
+
+    "categoryName":{
+        "categoryName1":"Burger",
+        "categoryName2":"Taco",
+        "categoryName3":"Pizza",
+        "categoryName4":"Chicken",
+        "categoryName5":"Drinks"
+    },
+    "productName":{
+        "product1":"Beef Burger",
+        "product2":"Chicken Burger",
+        "product3":"Cheese Burger",
+        "product4":"Chicken Pizza",
+        "product5":"Margreta Pizza",
+        "product6":"Lazania",
+        "product7":"Koshary",
+        "product8":"Fried Chicken",
+        "product9":"Grilled Chicken"
+    }
+}
